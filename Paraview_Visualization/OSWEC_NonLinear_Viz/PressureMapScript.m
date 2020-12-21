@@ -1,13 +1,15 @@
 % close all
 
+
 %script to plot max hydrostatic , linear and non-linear wave pressure,
 % combined hydrostatic and linear, 
 % and combined hydrostatic and non-linear pressure 
 % on .STL surface
 
-
+%__________________________________________________________
 %find time step with max HS pressure and plot on STL mesh
 figure;
+
 [HSmax,i]=max(output.bodies(1).cellPressures_hydrostatic);
 MAXHSP=max(HSmax)
 
@@ -18,10 +20,6 @@ col = HSmax';
 
 patch('Faces',f,'Vertices',v,'FaceVertexCData',col,'FaceColor','flat');
 
-% Set color bar and color map
-colorbar
-colormap(jet);
-
 % Create zlabel
 
 zlabel('Height(m)');
@@ -32,8 +30,13 @@ ylabel('Width(m)');
 % Create xlabel
 xlabel('Length(m)');
 
+% Set color bar and color map
+C = colorbar('location','EastOutside');
+colormap(jet);
+set(get(C,'XLabel'),'String','pressure (Pa)')
+
 % Create title
-title('Peak hydrostatic pressure');
+title('Maximum hydrostatic pressure');
 
 % light
 lighting phong
@@ -49,49 +52,7 @@ axis tight
 % azimuth and elevation
 view([-37.5 30])
 
-
-%find time step with max NL wave pressure and plot on STL mesh
-% % %plot max NL pressure
-figure;
-[NLmax,~]=max(output.bodies(1).cellPressures_waveNonLinear);
-MAXNLP=max(NLmax)
-v = body(1).bodyGeometry.vertex;
-f = body(1).bodyGeometry.face;
-col = NLmax';
-patch('Faces',f,'Vertices',v,'FaceVertexCData',col,'FaceColor','flat');
-
-
-% Set color bar and color map
-colorbar
-colormap(jet);
-
-% Create zlabel
-
-zlabel('Height(m)');
-
-% Create ylabel
-ylabel('Width(m)');
-
-% Create xlabel
-xlabel('Length(m)');
-
-% Create title
-title('Peak Non-Linear pressure');
-
-% light
-lighting phong
-
-% Add lights
-light('Position',[1 3 2]);
-light('Position',[-3 -1 3]);
-
-% axes settings
-axis equal
-axis tight
-
-% azimuth and elevation
-view([-37.5 30])
-
+%__________________________________________________________
 %find time step with max Linear wave pressure and plot on STL mesh
 % % %plot max L pressure
 figure;
@@ -102,11 +63,6 @@ f = body(1).bodyGeometry.face;
 col = Lmax';
 patch('Faces',f,'Vertices',v,'FaceVertexCData',col,'FaceColor','flat');
 
-
-% Set color bar and color map
-colorbar
-colormap(jet);
-
 % Create zlabel
 
 zlabel('Height(m)');
@@ -117,8 +73,13 @@ ylabel('Width(m)');
 % Create xlabel
 xlabel('Length(m)');
 
+% Set color bar and color map
+C = colorbar('location','EastOutside');
+colormap(jet);
+set(get(C,'XLabel'),'String','pressure (Pa)')
+
 % Create title
-title('Peak Linear pressure');
+title('Maximum Linear pressure');
 
 % light
 lighting phong
@@ -134,6 +95,56 @@ axis tight
 % azimuth and elevation
 view([-37.5 30])
 
+
+%__________________________________________________________
+%find time step with max NL wave pressure and plot on STL mesh
+% % %plot max NL pressure
+figure;
+[NLmax,~]=max(output.bodies(1).cellPressures_waveNonLinear);
+MAXNLP=max(NLmax)
+
+v = body(1).bodyGeometry.vertex;
+f = body(1).bodyGeometry.face;
+col = NLmax';
+patch('Faces',f,'Vertices',v,'FaceVertexCData',col,'FaceColor','flat');
+
+% Create zlabel
+
+zlabel('Height(m)');
+
+% Create ylabel
+ylabel('Width(m)');
+
+% Create xlabel
+xlabel('Length(m)');
+
+% Set color bar and color map
+C = colorbar('location','EastOutside');
+colormap(jet);
+set(get(C,'XLabel'),'String','pressure (Pa)')
+
+% Create title
+title('Maximum Non-Linear pressure');
+
+% light
+lighting phong
+
+% Add lights
+light('Position',[1 3 2]);
+light('Position',[-3 -1 3]);
+
+% axes settings
+axis equal
+axis tight
+
+% azimuth and elevation
+view([-37.5 30])
+
+
+
+
+
+%__________________________________________________________
 %find time step with max HS + Linear Wave pressure and plot on STL mesh
 %Max Total hydro pressure linear wave
 figure;
@@ -147,10 +158,6 @@ col = TPmaxL';
 patch('Faces',f,'Vertices',v,'FaceVertexCData',col,'FaceColor','flat');
 
 
-% Set color bar and color map
-colorbar
-colormap(jet);
-
 % Create zlabel
 
 zlabel('Height(m)');
@@ -161,8 +168,13 @@ ylabel('Width(m)');
 % Create xlabel
 xlabel('Length(m)');
 
+% Set color bar and color map
+C = colorbar('location','EastOutside');
+colormap(jet);
+set(get(C,'XLabel'),'String','pressure (Pa)')
+
 % Create title
-title('Peak Total pressure Linear');
+title('Maximum Total Pressure: Hysdrostatic + Linear');
 
 % light
 lighting phong
@@ -178,6 +190,9 @@ axis tight
 % azimuth and elevation
 view([-37.5 30])
 
+
+
+%__________________________________________________________
 %find time step with max HS + non-Linear Wave pressure and plot on STL mesh
 %Max Total hydro pressure non-linear wave
 figure;
@@ -191,10 +206,6 @@ col = TPmaxNL';
 patch('Faces',f,'Vertices',v,'FaceVertexCData',col,'FaceColor','flat');
 
 
-% Set color bar and color map
-colorbar
-colormap(jet);
-
 % Create zlabel
 
 zlabel('Height(m)');
@@ -205,8 +216,13 @@ zlabel('Height(m)');
 % Create xlabel
 xlabel('Length(m)');
 
+% Set color bar and color map
+C = colorbar('location','EastOutside');
+colormap(jet);
+set(get(C,'XLabel'),'String','pressure (Pa)')
+
 % Create title
-title('Peak Total pressure Non-Linear');
+title('Maximum Total pressure: Hydrostatic + Non-Linear');
 
 % light
 lighting phong
@@ -222,50 +238,5 @@ axis tight
 % azimuth and elevation
 view([-37.5 30])
 
-
-%Max Total hydro pressure non-linear wave with camera rotated to
-%intantaneous pitch angle
-
-figure;
-TotalPressNL=(output.bodies(1).cellPressures_hydrostatic)+(output.bodies(1).cellPressures_waveNonLinear);
-[TPmaxNL,pts]=max(TotalPressNL);
-
-
-v = body(1).bodyGeometry.vertex;
-f = body(1).bodyGeometry.face;
-col = TPmaxNL';
-patch('Faces',f,'Vertices',v,'FaceVertexCData',col,'FaceColor','flat');
-
-
-% Set color bar and color map
-colorbar
-colormap(jet);
-
-% Create zlabel
-
-zlabel('Height(m)');
-
-% Create ylabel
-
-
-% Create xlabel
-xlabel('Length(m)');
-
-% Create title
-title('Peak Total pressure Non-Linear');
-
-% light
-lighting phong
-
-% Add lights
-light('Position',[1 3 2]);
-light('Position',[-3 -1 3]);
-
-% axes settings
-axis equal
-axis tight
-
-% azimuth and elevation
-view([-37.5 30])
 
 
